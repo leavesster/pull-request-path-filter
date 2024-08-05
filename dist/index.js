@@ -28461,14 +28461,14 @@ async function main() {
     const pathsArray = transformToArray(paths);
     const hit = changedFiles.some((file) => micromatch.isMatch(file, pathsArray, {}));
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", hit);
+    core2.setOutput("should_skip", !hit);
     return;
   }
   if (pathsIgnore.length > 0) {
     const pathsIgnoreArray = transformToArray(pathsIgnore);
     const ignoreAll = changedFiles.every((file) => micromatch.isMatch(file, pathsIgnoreArray, {}));
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", !ignoreAll);
+    core2.setOutput("should_skip", ignoreAll);
     return;
   }
 }
