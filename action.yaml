@@ -1,0 +1,15 @@
+name: 'path condition'
+description: 'Greet someone and record the time'
+inputs:
+  paths:  # id of input
+    description: 'path'
+    required: false
+  paths-ignore:
+    description: 'ignore path'
+    required: false
+outputs:
+  hit:
+    description: 'trigger'
+runs:
+  using: 'node20'
+  main: 'index.js'
