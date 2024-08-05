@@ -28437,7 +28437,7 @@ async function main() {
     core2.error("No pull request found, exiting");
     return;
   }
-  core2.debug("event: " + github.context.payload.pull_request);
+  core2.debug("event: " + JSON.stringify(github.context.payload.pull_request));
   const { base_ref, head_ref } = github.context.payload.pull_request;
   const changedFiles = await getChangedFiles(base_ref, head_ref);
   if (changedFiles.length === 0) {

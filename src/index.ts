@@ -10,7 +10,7 @@ async function main() {
         return;
     }
 
-    core.debug('event: ' + github.context.payload.pull_request);
+    core.debug('event: ' + JSON.stringify(github.context.payload.pull_request));
 
     const {base_ref, head_ref} = github.context.payload.pull_request;
     
