@@ -14,7 +14,7 @@ async function main() {
 
     const {base, head} = github.context.payload.pull_request;
     
-    const changedFiles = await getChangedFiles(base.ref.sha, head.ref.sha);
+    const changedFiles = await getChangedFiles(base.sha, head.sha);
     
     if (changedFiles.length === 0) {
         core.info('No files changed, exiting');
