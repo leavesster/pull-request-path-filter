@@ -28439,7 +28439,7 @@ async function main() {
   }
   core2.debug("event: " + JSON.stringify(github.context.payload.pull_request));
   const { base, head } = github.context.payload.pull_request;
-  const changedFiles = await getChangedFiles(base.ref, head.ref);
+  const changedFiles = await getChangedFiles(base.ref.sha, head.ref.sha);
   if (changedFiles.length === 0) {
     core2.info("No files changed, exiting");
     core2.setOutput("changed_files", []);
