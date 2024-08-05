@@ -12,9 +12,9 @@ async function main() {
 
     core.debug('event: ' + JSON.stringify(github.context.payload.pull_request));
 
-    const {base_ref, head_ref} = github.context.payload.pull_request;
+    const {base, head} = github.context.payload.pull_request;
     
-    const changedFiles = await getChangedFiles(base_ref, head_ref);
+    const changedFiles = await getChangedFiles(base.ref, head.ref);
     
     if (changedFiles.length === 0) {
         core.info('No files changed, exiting');
