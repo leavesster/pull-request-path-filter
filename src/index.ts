@@ -39,21 +39,32 @@ async function main() {
         process.exit(1);
     }
 
+    core.info('changed files: ' + changedFiles);
     if (paths.length > 0) {
         const pathsArray = transformToArray(paths);
-        const hit = changedFiles.some(file => micromatch.isMatch(file, pathsArray, {}));
+        const files = pathMatch(changedFiles, pathsArray);
+        core.info('Matched files: ' + files);
         core.setOutput('changed_files', changedFiles);
-        core.setOutput('should_skip', !hit);
+        core.setOutput('should_skip', files.length > 0);
         return;
     }
 
     if (pathsIgnore.length > 0) {
         const pathsIgnoreArray = transformToArray(pathsIgnore);
-        const ignoreAll = changedFiles.every(file => micromatch.isMatch(file, pathsIgnoreArray, {}));
+        const files = ignoreFilter(changedFiles, pathsIgnoreArray);
+        core.info('Result files after ignore: ' + files);
         core.setOutput('changed_files', changedFiles);
-        core.setOutput('should_skip', ignoreAll);
+        core.setOutput('should_skip', files.length > 0);
         return;
     }
+}
+
+export function pathMatch(changedFiles: string[], paths_pattern: string[]): string[] {
+   return micromatch.match(changedFiles, paths_pattern, {dot: true});
+}
+
+export function ignoreFilter(changedFiles: string[], paths_pattern: string[]): string[] {
+    return micromatch.not(changedFiles, paths_pattern, {dot: true});
 }
 
 function transformToArray(raw: string): string[] {

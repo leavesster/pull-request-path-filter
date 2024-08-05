@@ -1904,7 +1904,7 @@ var require_HeaderParser = __commonJS({
       this.header = {};
       this.finished = false;
       this.ss = new StreamSearch(B_DCRLF);
-      this.ss.on("info", function(isMatch2, data, start, end) {
+      this.ss.on("info", function(isMatch, data, start, end) {
         if (data && !self.maxed) {
           if (self.nread + end - start >= self.maxHeaderSize) {
             end = self.maxHeaderSize - self.nread + start;
@@ -1915,7 +1915,7 @@ var require_HeaderParser = __commonJS({
           }
           self.buffer += data.toString("binary", start, end);
         }
-        if (isMatch2) {
+        if (isMatch) {
           self._finish();
         }
       });
@@ -2094,8 +2094,8 @@ var require_Dicer = __commonJS({
     Dicer.prototype.setBoundary = function(boundary) {
       const self = this;
       this._bparser = new StreamSearch("\r\n--" + boundary);
-      this._bparser.on("info", function(isMatch2, data, start, end) {
-        self._oninfo(isMatch2, data, start, end);
+      this._bparser.on("info", function(isMatch, data, start, end) {
+        self._oninfo(isMatch, data, start, end);
       });
     };
     Dicer.prototype._ignore = function() {
@@ -2105,7 +2105,7 @@ var require_Dicer = __commonJS({
         this._part.resume();
       }
     };
-    Dicer.prototype._oninfo = function(isMatch2, data, start, end) {
+    Dicer.prototype._oninfo = function(isMatch, data, start, end) {
       let buf;
       const self = this;
       let i = 0;
@@ -2178,7 +2178,7 @@ var require_Dicer = __commonJS({
           }
         }
       }
-      if (isMatch2) {
+      if (isMatch) {
         this._hparser.reset();
         if (this._isPreamble) {
           this._isPreamble = false;
@@ -2820,8 +2820,8 @@ var require_parseParams = __commonJS({
       "%fF": "\xFF",
       "%FF": "\xFF"
     };
-    function encodedReplacer(match) {
-      return EncodedLookup[match];
+    function encodedReplacer(match2) {
+      return EncodedLookup[match2];
     }
     var STATE_KEY = 0;
     var STATE_VALUE = 1;
@@ -10611,15 +10611,15 @@ var require_mock_utils = __commonJS({
         isPromise
       }
     } = require("util");
-    function matchValue(match, value) {
-      if (typeof match === "string") {
-        return match === value;
+    function matchValue(match2, value) {
+      if (typeof match2 === "string") {
+        return match2 === value;
       }
-      if (match instanceof RegExp) {
-        return match.test(value);
+      if (match2 instanceof RegExp) {
+        return match2.test(value);
       }
-      if (typeof match === "function") {
-        return match(value) === true;
+      if (typeof match2 === "function") {
+        return match2(value) === true;
       }
       return false;
     }
@@ -10686,11 +10686,11 @@ var require_mock_utils = __commonJS({
       return [...pathSegments, qp.toString()].join("?");
     }
     function matchKey(mockDispatch2, { path, method, body, headers }) {
-      const pathMatch = matchValue(mockDispatch2.path, path);
+      const pathMatch2 = matchValue(mockDispatch2.path, path);
       const methodMatch = matchValue(mockDispatch2.method, method);
       const bodyMatch = typeof mockDispatch2.body !== "undefined" ? matchValue(mockDispatch2.body, body) : true;
       const headersMatch = matchHeaders(mockDispatch2, headers);
-      return pathMatch && methodMatch && bodyMatch && headersMatch;
+      return pathMatch2 && methodMatch && bodyMatch && headersMatch;
     }
     function getResponseData2(data) {
       if (Buffer.isBuffer(data)) {
@@ -24338,8 +24338,8 @@ var require_utils6 = __commonJS({
     exports2.escapeRegex = (str2) => str2.replace(REGEX_SPECIAL_CHARS_GLOBAL, "\\$1");
     exports2.toPosixSlashes = (str2) => str2.replace(REGEX_BACKSLASH, "/");
     exports2.removeBackslashes = (str2) => {
-      return str2.replace(REGEX_REMOVE_BACKSLASH, (match) => {
-        return match === "\\" ? "" : match;
+      return str2.replace(REGEX_REMOVE_BACKSLASH, (match2) => {
+        return match2 === "\\" ? "" : match2;
       });
     };
     exports2.supportsLookbehinds = () => {
@@ -24960,10 +24960,10 @@ var require_parse3 = __commonJS({
             push({ type: "text", value });
             continue;
           }
-          const match = /^\\+/.exec(remaining());
+          const match2 = /^\\+/.exec(remaining());
           let slashes = 0;
-          if (match && match[0].length > 2) {
-            slashes = match[0].length;
+          if (match2 && match2[0].length > 2) {
+            slashes = match2[0].length;
             state.index += slashes;
             if (slashes % 2 !== 0) {
               value += "\\";
@@ -25251,10 +25251,10 @@ var require_parse3 = __commonJS({
           if (value === "$" || value === "^") {
             value = `\\${value}`;
           }
-          const match = REGEX_NON_SPECIAL_CHARS.exec(remaining());
-          if (match) {
-            value += match[0];
-            state.index += match[0].length;
+          const match2 = REGEX_NON_SPECIAL_CHARS.exec(remaining());
+          if (match2) {
+            value += match2[0];
+            state.index += match2[0].length;
           }
           push({ type: "text", value });
           continue;
@@ -25465,11 +25465,11 @@ var require_parse3 = __commonJS({
           case "**/.*":
             return `(?:${nodot}${globstar(opts)}${SLASH_LITERAL})?${DOT_LITERAL}${ONE_CHAR}${star}`;
           default: {
-            const match = /^(.*?)\.(\w+)$/.exec(str2);
-            if (!match) return;
-            const source2 = create(match[1]);
+            const match2 = /^(.*?)\.(\w+)$/.exec(str2);
+            if (!match2) return;
+            const source2 = create(match2[1]);
             if (!source2) return;
-            return source2 + DOT_LITERAL + match[2];
+            return source2 + DOT_LITERAL + match2[2];
           }
         }
       };
@@ -25498,8 +25498,8 @@ var require_picomatch = __commonJS({
       if (Array.isArray(glob)) {
         const fns = glob.map((input) => picomatch(input, options, returnState));
         const arrayMatcher = (str2) => {
-          for (const isMatch2 of fns) {
-            const state2 = isMatch2(str2);
+          for (const isMatch of fns) {
+            const state2 = isMatch(str2);
             if (state2) return state2;
           }
           return false;
@@ -25521,12 +25521,12 @@ var require_picomatch = __commonJS({
         isIgnored = picomatch(opts.ignore, ignoreOpts, returnState);
       }
       const matcher = (input, returnObject = false) => {
-        const { isMatch: isMatch2, match, output } = picomatch.test(input, regex, options, { glob, posix });
-        const result = { glob, state, regex, posix, input, output, match, isMatch: isMatch2 };
+        const { isMatch, match: match2, output } = picomatch.test(input, regex, options, { glob, posix });
+        const result = { glob, state, regex, posix, input, output, match: match2, isMatch };
         if (typeof opts.onResult === "function") {
           opts.onResult(result);
         }
-        if (isMatch2 === false) {
+        if (isMatch === false) {
           result.isMatch = false;
           return returnObject ? result : false;
         }
@@ -25556,20 +25556,20 @@ var require_picomatch = __commonJS({
       }
       const opts = options || {};
       const format = opts.format || (posix ? utils.toPosixSlashes : null);
-      let match = input === glob;
-      let output = match && format ? format(input) : input;
-      if (match === false) {
+      let match2 = input === glob;
+      let output = match2 && format ? format(input) : input;
+      if (match2 === false) {
         output = format ? format(input) : input;
-        match = output === glob;
+        match2 = output === glob;
       }
-      if (match === false || opts.capture === true) {
+      if (match2 === false || opts.capture === true) {
         if (opts.matchBase === true || opts.basename === true) {
-          match = picomatch.matchBase(input, regex, options, posix);
+          match2 = picomatch.matchBase(input, regex, options, posix);
         } else {
-          match = regex.exec(output);
+          match2 = regex.exec(output);
         }
       }
-      return { isMatch: Boolean(match), match, output };
+      return { isMatch: Boolean(match2), match: match2, output };
     };
     picomatch.matchBase = (input, glob, options, posix = utils.isWindows(options)) => {
       const regex = glob instanceof RegExp ? glob : picomatch.makeRe(glob, options);
@@ -25656,13 +25656,13 @@ var require_micromatch = __commonJS({
         }
       };
       for (let i = 0; i < patterns.length; i++) {
-        let isMatch2 = picomatch(String(patterns[i]), { ...options, onResult }, true);
-        let negated = isMatch2.state.negated || isMatch2.state.negatedExtglob;
+        let isMatch = picomatch(String(patterns[i]), { ...options, onResult }, true);
+        let negated = isMatch.state.negated || isMatch.state.negatedExtglob;
         if (negated) negatives++;
         for (let item of list) {
-          let matched = isMatch2(item, true);
-          let match = negated ? !matched.isMatch : matched.isMatch;
-          if (!match) continue;
+          let matched = isMatch(item, true);
+          let match2 = negated ? !matched.isMatch : matched.isMatch;
+          if (!match2) continue;
           if (negated) {
             omit2.add(matched.output);
           } else {
@@ -25732,8 +25732,8 @@ var require_micromatch = __commonJS({
     micromatch2.some = (list, patterns, options) => {
       let items = [].concat(list);
       for (let pattern of [].concat(patterns)) {
-        let isMatch2 = picomatch(String(pattern), options);
-        if (items.some((item) => isMatch2(item))) {
+        let isMatch = picomatch(String(pattern), options);
+        if (items.some((item) => isMatch(item))) {
           return true;
         }
       }
@@ -25742,8 +25742,8 @@ var require_micromatch = __commonJS({
     micromatch2.every = (list, patterns, options) => {
       let items = [].concat(list);
       for (let pattern of [].concat(patterns)) {
-        let isMatch2 = picomatch(String(pattern), options);
-        if (!items.every((item) => isMatch2(item))) {
+        let isMatch = picomatch(String(pattern), options);
+        if (!items.every((item) => isMatch(item))) {
           return false;
         }
       }
@@ -25758,9 +25758,9 @@ var require_micromatch = __commonJS({
     micromatch2.capture = (glob, input, options) => {
       let posix = utils.isWindows(options);
       let regex = picomatch.makeRe(String(glob), { ...options, capture: true });
-      let match = regex.exec(posix ? utils.toPosixSlashes(input) : input);
-      if (match) {
-        return match.slice(1).map((v) => v === void 0 ? "" : v);
+      let match2 = regex.exec(posix ? utils.toPosixSlashes(input) : input);
+      if (match2) {
+        return match2.slice(1).map((v) => v === void 0 ? "" : v);
       }
     };
     micromatch2.makeRe = (...args) => picomatch.makeRe(...args);
@@ -25790,6 +25790,12 @@ var require_micromatch = __commonJS({
 });
 
 // src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  ignoreFilter: () => ignoreFilter,
+  pathMatch: () => pathMatch
+});
+module.exports = __toCommonJS(src_exports);
 var core2 = __toESM(require_core());
 var github = __toESM(require_github());
 var micromatch = __toESM(require_micromatch());
@@ -25917,12 +25923,12 @@ function makeSnippet(mark, options) {
   var re = /\r?\n|\r|\0/g;
   var lineStarts = [0];
   var lineEnds = [];
-  var match;
+  var match2;
   var foundLineNo = -1;
-  while (match = re.exec(mark.buffer)) {
-    lineEnds.push(match.index);
-    lineStarts.push(match.index + match[0].length);
-    if (mark.position <= match.index && foundLineNo < 0) {
+  while (match2 = re.exec(mark.buffer)) {
+    lineEnds.push(match2.index);
+    lineStarts.push(match2.index + match2[0].length);
+    if (mark.position <= match2.index && foundLineNo < 0) {
       foundLineNo = lineStarts.length - 2;
     }
   }
@@ -26392,31 +26398,31 @@ function resolveYamlTimestamp(data) {
   return false;
 }
 function constructYamlTimestamp(data) {
-  var match, year, month, day, hour, minute, second, fraction = 0, delta = null, tz_hour, tz_minute, date;
-  match = YAML_DATE_REGEXP.exec(data);
-  if (match === null) match = YAML_TIMESTAMP_REGEXP.exec(data);
-  if (match === null) throw new Error("Date resolve error");
-  year = +match[1];
-  month = +match[2] - 1;
-  day = +match[3];
-  if (!match[4]) {
+  var match2, year, month, day, hour, minute, second, fraction = 0, delta = null, tz_hour, tz_minute, date;
+  match2 = YAML_DATE_REGEXP.exec(data);
+  if (match2 === null) match2 = YAML_TIMESTAMP_REGEXP.exec(data);
+  if (match2 === null) throw new Error("Date resolve error");
+  year = +match2[1];
+  month = +match2[2] - 1;
+  day = +match2[3];
+  if (!match2[4]) {
     return new Date(Date.UTC(year, month, day));
   }
-  hour = +match[4];
-  minute = +match[5];
-  second = +match[6];
-  if (match[7]) {
-    fraction = match[7].slice(0, 3);
+  hour = +match2[4];
+  minute = +match2[5];
+  second = +match2[6];
+  if (match2[7]) {
+    fraction = match2[7].slice(0, 3);
     while (fraction.length < 3) {
       fraction += "0";
     }
     fraction = +fraction;
   }
-  if (match[9]) {
-    tz_hour = +match[10];
-    tz_minute = +(match[11] || 0);
+  if (match2[9]) {
+    tz_hour = +match2[10];
+    tz_minute = +(match2[11] || 0);
     delta = (tz_hour * 60 + tz_minute) * 6e4;
-    if (match[9] === "-") delta = -delta;
+    if (match2[9] === "-") delta = -delta;
   }
   date = new Date(Date.UTC(year, month, day, hour, minute, second, fraction));
   if (delta) date.setTime(date.getTime() - delta);
@@ -26720,19 +26726,19 @@ function throwWarning(state, message) {
 }
 var directiveHandlers = {
   YAML: function handleYamlDirective(state, name, args) {
-    var match, major, minor;
+    var match2, major, minor;
     if (state.version !== null) {
       throwError(state, "duplication of %YAML directive");
     }
     if (args.length !== 1) {
       throwError(state, "YAML directive accepts exactly one argument");
     }
-    match = /^([0-9]+)\.([0-9]+)$/.exec(args[0]);
-    if (match === null) {
+    match2 = /^([0-9]+)\.([0-9]+)$/.exec(args[0]);
+    if (match2 === null) {
       throwError(state, "ill-formed argument of the YAML directive");
     }
-    major = parseInt(match[1], 10);
-    minor = parseInt(match[2], 10);
+    major = parseInt(match2[1], 10);
+    minor = parseInt(match2[2], 10);
     if (major !== 1) {
       throwError(state, "unacceptable YAML version of the document");
     }
@@ -28065,9 +28071,9 @@ function foldString(string, width) {
   }();
   var prevMoreIndented = string[0] === "\n" || string[0] === " ";
   var moreIndented;
-  var match;
-  while (match = lineRe.exec(string)) {
-    var prefix = match[1], line = match[2];
+  var match2;
+  while (match2 = lineRe.exec(string)) {
+    var prefix = match2[1], line = match2[2];
     moreIndented = line[0] === " ";
     result += prefix + (!prevMoreIndented && !moreIndented && line !== "" ? "\n" : "") + foldLine(line, width);
     prevMoreIndented = moreIndented;
@@ -28077,11 +28083,11 @@ function foldString(string, width) {
 function foldLine(line, width) {
   if (line === "" || line[0] === " ") return line;
   var breakRe = / [^ ]/g;
-  var match;
+  var match2;
   var start = 0, end, curr = 0, next = 0;
   var result = "";
-  while (match = breakRe.exec(line)) {
-    next = match.index;
+  while (match2 = breakRe.exec(line)) {
+    next = match2.index;
     if (next - start > width) {
       end = curr > start ? curr : next;
       result += "\n" + line.slice(start, end);
@@ -28458,20 +28464,29 @@ async function main() {
     core2.setOutput("should_skip", true);
     process.exit(1);
   }
+  core2.info("changed files: " + changedFiles);
   if (paths.length > 0) {
     const pathsArray = transformToArray(paths);
-    const hit = changedFiles.some((file) => micromatch.isMatch(file, pathsArray, {}));
+    const files = pathMatch(changedFiles, pathsArray);
+    core2.info("Matched files: " + files);
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", !hit);
+    core2.setOutput("should_skip", files.length > 0);
     return;
   }
   if (pathsIgnore.length > 0) {
     const pathsIgnoreArray = transformToArray(pathsIgnore);
-    const ignoreAll = changedFiles.every((file) => micromatch.isMatch(file, pathsIgnoreArray, {}));
+    const files = ignoreFilter(changedFiles, pathsIgnoreArray);
+    core2.info("Result files after ignore: " + files);
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", ignoreAll);
+    core2.setOutput("should_skip", files.length > 0);
     return;
   }
+}
+function pathMatch(changedFiles, paths_pattern) {
+  return micromatch.match(changedFiles, paths_pattern, { dot: true });
+}
+function ignoreFilter(changedFiles, paths_pattern) {
+  return micromatch.not(changedFiles, paths_pattern, { dot: true });
 }
 function transformToArray(raw) {
   try {
@@ -28491,6 +28506,11 @@ async function getChangedFiles(base_ref, head_ref) {
   return lines;
 }
 main();
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  ignoreFilter,
+  pathMatch
+});
 /*! Bundled license information:
 
 undici/lib/fetch/body.js:
