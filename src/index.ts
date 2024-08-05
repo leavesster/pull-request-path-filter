@@ -10,6 +10,8 @@ async function main() {
         return;
     }
 
+    core.debug('event: ' + github.context.payload.pull_request);
+
     const {base_ref, head_ref} = github.context.payload.pull_request;
     
     const changedFiles = await getChangedFiles(base_ref, head_ref);
