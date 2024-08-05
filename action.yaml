@@ -2,14 +2,16 @@ name: 'path condition'
 description: 'Greet someone and record the time'
 inputs:
   paths:  # id of input
-    description: 'path'
+    description: 'A YAML-string with named paths patterns'
     required: false
   paths-ignore:
-    description: 'ignore path'
+    description: 'A YAML-string with named paths ignore patterns'
     required: false
 outputs:
-  hit:
-    description: 'trigger'
+  should_skip:
+    description: 'should skip this pull request'
+  changed_files:
+    description: 'changed files'
 runs:
   using: 'node20'
   main: 'index.js'
