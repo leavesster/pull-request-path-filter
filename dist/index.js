@@ -28468,6 +28468,7 @@ async function main() {
   if (paths.length > 0) {
     const pathsArray = transformToArray(paths);
     const files = pathMatch(changedFiles, pathsArray);
+    core2.info("paths: " + pathsArray);
     core2.info("Matched files: " + files);
     core2.setOutput("changed_files", changedFiles);
     core2.setOutput("should_skip", files.length > 0);
@@ -28476,6 +28477,7 @@ async function main() {
   if (pathsIgnore.length > 0) {
     const pathsIgnoreArray = transformToArray(pathsIgnore);
     const files = ignoreFilter(changedFiles, pathsIgnoreArray);
+    core2.info("paths-ignore: " + pathsIgnoreArray);
     core2.info("Result files after ignore: " + files);
     core2.setOutput("changed_files", changedFiles);
     core2.setOutput("should_skip", files.length > 0);

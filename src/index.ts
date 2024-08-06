@@ -43,6 +43,7 @@ async function main() {
     if (paths.length > 0) {
         const pathsArray = transformToArray(paths);
         const files = pathMatch(changedFiles, pathsArray);
+        core.info('paths: ' + pathsArray);
         core.info('Matched files: ' + files);
         core.setOutput('changed_files', changedFiles);
         core.setOutput('should_skip', files.length > 0);
@@ -52,6 +53,7 @@ async function main() {
     if (pathsIgnore.length > 0) {
         const pathsIgnoreArray = transformToArray(pathsIgnore);
         const files = ignoreFilter(changedFiles, pathsIgnoreArray);
+        core.info('paths-ignore: ' + pathsIgnoreArray);
         core.info('Result files after ignore: ' + files);
         core.setOutput('changed_files', changedFiles);
         core.setOutput('should_skip', files.length > 0);
