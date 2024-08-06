@@ -60,6 +60,12 @@ describe("path filter", () => {
         expect(files).to.deep.equal([".github/workflows/test.yml", ".github/workflows/main.yml"]);
     });
 
+    test("file match", () => {
+        let paths = ["index.js"];
+        let files = pathMatch(changedFiles, paths);
+        expect(files).to.deep.equal([]);
+    });
+
     test("last positive match override previous negative match", () => {
         let paths = ["!.github/workflows/*", ".github/workflows/test.yml"];
         let files = pathMatch(changedFiles, paths);
