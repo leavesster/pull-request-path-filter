@@ -46,7 +46,7 @@ async function main() {
         core.info('paths: ' + pathsArray);
         core.info('Matched files: ' + files);
         core.setOutput('changed_files', changedFiles);
-        core.setOutput('should_skip', files.length > 0);
+        core.setOutput('should_skip', files.length == 0);
         return;
     }
 
@@ -56,7 +56,7 @@ async function main() {
         core.info('paths-ignore: ' + pathsIgnoreArray);
         core.info('Result files after ignore: ' + files);
         core.setOutput('changed_files', changedFiles);
-        core.setOutput('should_skip', files.length > 0);
+        core.setOutput('should_skip', files.length == 0);
         return;
     }
 }

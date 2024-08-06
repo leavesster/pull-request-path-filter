@@ -28471,7 +28471,7 @@ async function main() {
     core2.info("paths: " + pathsArray);
     core2.info("Matched files: " + files);
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", files.length > 0);
+    core2.setOutput("should_skip", files.length == 0);
     return;
   }
   if (pathsIgnore.length > 0) {
@@ -28480,7 +28480,7 @@ async function main() {
     core2.info("paths-ignore: " + pathsIgnoreArray);
     core2.info("Result files after ignore: " + files);
     core2.setOutput("changed_files", changedFiles);
-    core2.setOutput("should_skip", files.length > 0);
+    core2.setOutput("should_skip", files.length == 0);
     return;
   }
 }
