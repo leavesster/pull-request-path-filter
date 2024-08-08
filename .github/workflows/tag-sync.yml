@@ -22,7 +22,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Create and push new tag
-        if: startsWith(github.ref, 'ref/tags/v0.2.')
+        if: startsWith(github.ref, 'refs/tags/v0.2.')
         run: |
             NEW_TAG="v0.2"
             git tag -f $NEW_TAG ${{ github.ref }}
