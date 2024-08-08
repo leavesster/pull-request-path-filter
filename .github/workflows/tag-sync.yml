@@ -21,13 +21,9 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Get the tag name
-        id: get_tag
-        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-
       - name: Create and push new tag
-        if: startsWith(steps.get_tag.outputs.tag, 'v0.2.')
+        if: startsWith(github.ref, 'ref/tags/v0.2.')
         run: |
             NEW_TAG="v0.2"
-            git tag -f $NEW_TAG ${{ steps.get_tag.outputs.tag }}
+            git tag -f $NEW_TAG ${{ github.ref }}
             git push origin -f $NEW_TAG
