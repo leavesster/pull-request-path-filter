@@ -22,6 +22,12 @@ describe("is match api test", () => {
             expect(result).toBe(true);
         }
 
+        // FIXME: !**.js now return true, we need a workaround to make it return false
+        {
+            const result = isMatch("src/a/b/index.js", "!**.js");
+            expect(result).toBe(true);
+        }
+
     });
 
     test("multiple patterns", () => {

@@ -62,7 +62,17 @@ async function main() {
 }
 
 export function pathMatch(changedFiles: string[], paths_pattern: string[]): string[] {
-   return micromatch.match(changedFiles, paths_pattern, {dot: true});
+    // workaround for negative match
+    const workaround_pattern: string[] = [];
+    for (const pattern of paths_pattern) {
+        if (pattern.startsWith('!**')) {
+            workaround_pattern.push("!" + "(" + pattern.substring(1) + ")");
+        } else {
+            workaround_pattern.push(pattern);
+        }
+    }
+
+    return micromatch.match(changedFiles, workaround_pattern, {dot: true});
 }
 
 export function ignoreFilter(changedFiles: string[], paths_pattern: string[]): string[] {
