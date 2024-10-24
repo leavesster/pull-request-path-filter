@@ -1,5 +1,6 @@
 # Action Path Filtering
 
+
 A workaround action for [handling-skipped-but-required-checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks#handling-skipped-but-required-checks).
 Please note that this action is not a perfect solution, it's just a workaround. **It's just work for `pull_request` and `pull_request_target` events, and it's not work for `push` event**.
 
