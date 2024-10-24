@@ -44,6 +44,23 @@ describe("path filter", () => {
         let files = pathMatch(changedFiles, paths);
         expect(files).to.deep.equal([]);
     });
+
+    test("negative with * match", () => {
+        let files = pathMatch(["d.js"], ["!*.js"]);
+        expect(files).to.deep.equal([]);
+    });
+
+    // TODO: !**.js now return true, we make a workaround to let it return false
+    test("negative with ** match (workaround)", () => {
+        let files = pathMatch(["a/b/c/d.js"], ["!**.js"]);
+        expect(files).to.deep.equal([]);
+    });
+
+    test("negative with glob match override previous positive match", () => {
+        let paths = ["**.yml", "!**/test.yml"];
+        let files = pathMatch(changedFiles, paths);
+        expect(files).to.deep.equal([".github/workflows/main.yml"]);
+    });
 })
 
 
