@@ -28485,7 +28485,15 @@ async function main() {
   }
 }
 function pathMatch(changedFiles, paths_pattern) {
-  return micromatch.match(changedFiles, paths_pattern, { dot: true });
+  const workaround_pattern = [];
+  for (const pattern of paths_pattern) {
+    if (pattern.startsWith("!**")) {
+      workaround_pattern.push("!(" + pattern.substring(1) + ")");
+    } else {
+      workaround_pattern.push(pattern);
+    }
+  }
+  return micromatch.match(changedFiles, workaround_pattern, { dot: true });
 }
 function ignoreFilter(changedFiles, paths_pattern) {
   return micromatch.not(changedFiles, paths_pattern, { dot: true });
