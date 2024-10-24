@@ -1,0 +1,12 @@
+name: github path filter
+on:
+  pull_request:
+    paths:
+      - "**"
+      - "!**.md"
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo path
+        run: echo '${{ toJson(github.event) }}'
