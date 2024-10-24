@@ -8,9 +8,8 @@ test('execShellCommand', async () => {
 });
 
 test("execShellCommand git diff log", async () => {
-    const result = await execShellCommand('git diff --name-only 57acc29...4d5ee27');
+    const result = await execShellCommand('git diff --name-only 8b12d3f9fc26044ac74bab2180e3277ca26118c1...27f7be7e8bedc990954bc488d3690c86ec550008');
     const lines = result.trim().split('\n');
-    expect(lines, `${lines.join(",")}`).toHaveLength(2)
+    expect(lines, `${lines.join(",")}`).toHaveLength(1)
     expect(lines).toContain('package.json');
-    expect(lines).toContain('test/shell.test.ts');
 });
