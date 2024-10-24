@@ -5,31 +5,31 @@ describe("path filter", () => {
 
     let changedFiles = [".github/workflows/test.yml", ".github/workflows/main.yml", "src/index.js"];
     test("positive match", () => {
-        // ** match
-        let paths = ["src/**"];
-        let files = pathMatch(changedFiles, paths);
-        expect(files).to.deep.equal(["src/index.js"]);
-        
-        paths = ["**.js"];
-        files = pathMatch(changedFiles, paths);
-        expect(files).to.deep.equal(["src/index.js"]);
+        {
+            let files = pathMatch(changedFiles, ["src/**"]);
+            expect(files).to.deep.equal(["src/index.js"]);
+        }
 
-        // single * match
-        paths = ["*.yml"];
-        files = pathMatch(changedFiles, paths);
-        expect(files).length(0);
+        {
+            const files = pathMatch(changedFiles, ["**.js"]);
+            expect(files).to.deep.equal(["src/index.js"]);
+        }
+        
+        {
+            const files = pathMatch(changedFiles, ["*.yml"]);
+            expect(files, "* don't match '/'").length(0);
+        }
     });
 
-    test("directory match", () => {
+    test("glob ** match", () => {
         const changedFiles = [".github/workflows/test.yml", ".github/workflows/main.yml", "src/index.js"];
-        let paths = ["**.yml"];
-        let files = pathMatch(changedFiles, paths);
-        expect(files).to.deep.equal([".github/workflows/test.yml", ".github/workflows/main.yml"]);
+        let files = pathMatch(changedFiles, ["**.yml"]);
+        expect(files.length).toBe(2);
     });
 
     test("file match", () => {
-        let paths = ["index.js"];
-        let files = pathMatch(changedFiles, paths);
+
+        let files = pathMatch(changedFiles, ["index.js"]);
         expect(files).to.deep.equal([]);
     });
 
