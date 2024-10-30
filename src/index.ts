@@ -62,17 +62,22 @@ async function main() {
 }
 
 export function pathMatch(changedFiles: string[], paths_pattern: string[]): string[] {
-    // workaround for negative match
-    const workaround_pattern: string[] = [];
-    for (const pattern of paths_pattern) {
-        if (pattern.startsWith('!**')) {
-            workaround_pattern.push("!" + "(" + pattern.substring(1) + ")");
-        } else {
-            workaround_pattern.push(pattern);
+    const set = new Set<string>();
+    for (const p of paths_pattern) {
+
+        if (p.startsWith('!')) {
+            const files = micromatch.match(changedFiles, p.substring(1), {dot: true});
+            for (const f of files) {
+                set.delete(f);
+            }
+            continue;
+        }
+        const files = micromatch.match(changedFiles, p, {dot: true});
+        for (const f of files) {
+            set.add(f);
         }
     }
-
-    return micromatch.match(changedFiles, workaround_pattern, {dot: true});
+    return Array.from(set);
 }
 
 export function ignoreFilter(changedFiles: string[], paths_pattern: string[]): string[] {
@@ -92,7 +97,12 @@ function transformToArray(raw: string): string[] {
     }
 }
 
+async function ensureRefAvailable(ref: string): Promise<void> {
+    const result = await execShellCommand('git fetch --depth=1 --filter=blob:none --no-tags origin' + ref);
+}
+
 async function getChangedFiles(base_ref: string, head_ref: string): Promise<string[]> {
+    await ensureRefAvailable(base_ref);
     const result = await execShellCommand('git diff --name-only ' + base_ref + '...' + head_ref);
     const lines = result.trim().split('\n');
     return lines;

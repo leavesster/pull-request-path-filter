@@ -61,6 +61,21 @@ describe("path filter", () => {
         let files = pathMatch(changedFiles, paths);
         expect(files).to.deep.equal([".github/workflows/main.yml"]);
     });
+
+    test("test example", () => {
+        const changedFiles = ["src/a/b/c.ts"];
+        let paths = ["src/**"];
+        let files = pathMatch(changedFiles, paths);
+        expect(files.length).greaterThan(0);
+
+        paths = ["!**.md"];
+        files = pathMatch(changedFiles, paths);
+        expect(files.length).eq(0);
+
+        paths = ["src/**", "!**.md"];
+        files = pathMatch(changedFiles, paths);
+        expect(files.length).greaterThan(0);
+    })
 })
 
 
