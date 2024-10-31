@@ -28517,7 +28517,7 @@ function transformToArray(raw) {
   }
 }
 async function ensureRefAvailable(ref) {
-  const result = await execShellCommand("git fetch --depth=1 --filter=blob:none --no-tags origin" + ref);
+  const result = await execShellCommand("git fetch --depth=1 --filter=blob:none --no-tags origin " + ref);
 }
 async function getChangedFiles(base_ref, head_ref) {
   await ensureRefAvailable(base_ref);
