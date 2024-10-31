@@ -28485,15 +28485,21 @@ async function main() {
   }
 }
 function pathMatch(changedFiles, paths_pattern) {
-  const workaround_pattern = [];
-  for (const pattern of paths_pattern) {
-    if (pattern.startsWith("!**")) {
-      workaround_pattern.push("!(" + pattern.substring(1) + ")");
-    } else {
-      workaround_pattern.push(pattern);
+  const set2 = /* @__PURE__ */ new Set();
+  for (const p of paths_pattern) {
+    if (p.startsWith("!")) {
+      const files2 = micromatch.match(changedFiles, p.substring(1), { dot: true });
+      for (const f of files2) {
+        set2.delete(f);
+      }
+      continue;
+    }
+    const files = micromatch.match(changedFiles, p, { dot: true });
+    for (const f of files) {
+      set2.add(f);
     }
   }
-  return micromatch.match(changedFiles, workaround_pattern, { dot: true });
+  return Array.from(set2);
 }
 function ignoreFilter(changedFiles, paths_pattern) {
   return micromatch.not(changedFiles, paths_pattern, { dot: true });
@@ -28510,7 +28516,11 @@ function transformToArray(raw) {
     return [];
   }
 }
+async function ensureRefAvailable(ref) {
+  const result = await execShellCommand("git fetch --depth=1 --filter=blob:none --no-tags origin " + ref);
+}
 async function getChangedFiles(base_ref, head_ref) {
+  await ensureRefAvailable(base_ref);
   const result = await execShellCommand("git diff --name-only " + base_ref + "..." + head_ref);
   const lines = result.trim().split("\n");
   return lines;

@@ -98,7 +98,7 @@ function transformToArray(raw: string): string[] {
 }
 
 async function ensureRefAvailable(ref: string): Promise<void> {
-    const result = await execShellCommand('git fetch --depth=1 --filter=blob:none --no-tags origin' + ref);
+    const result = await execShellCommand('git fetch --depth=1 --filter=blob:none --no-tags origin ' + ref);
 }
 
 async function getChangedFiles(base_ref: string, head_ref: string): Promise<string[]> {
