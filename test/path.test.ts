@@ -76,6 +76,14 @@ describe("path filter", () => {
         files = pathMatch(changedFiles, paths);
         expect(files.length).greaterThan(0);
     })
+
+    test("test example 2", () => {
+        const changedFiles = ["oomol-studio-main/desktop/container-server/image/Dockerfile"]
+        const paths = ["oomol-studio-main/**","oomol-scripts/**",".github/workflows/oomol-main.yml","!**.md"];
+        let files = pathMatch(changedFiles, paths);
+        console.log(files);
+        expect(files.length).greaterThan(0);
+    });
 })
 
 
