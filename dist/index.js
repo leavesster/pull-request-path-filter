@@ -28516,11 +28516,7 @@ function transformToArray(raw) {
     return [];
   }
 }
-async function ensureRefAvailable(ref) {
-  const result = await execShellCommand("git fetch --depth=1 --filter=blob:none --no-tags origin " + ref);
-}
 async function getChangedFiles(base_ref, head_ref) {
-  await ensureRefAvailable(base_ref);
   const result = await execShellCommand("git diff --name-only " + base_ref + "..." + head_ref);
   const lines = result.trim().split("\n");
   return lines;
