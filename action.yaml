@@ -1,5 +1,8 @@
-name: 'path condition'
-description: 'Greet someone and record the time'
+name: 'Pull Request Path Filter'
+description: 'Filter pull requests by changed file paths. A workaround for handling skipped but required status checks with path conditions.'
+branding:
+  icon: 'filter'
+  color: 'blue'
 inputs:
   paths:  # id of input
     description: 'A YAML-string with named paths patterns'

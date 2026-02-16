@@ -1,14 +1,14 @@
 {
   "name": "paths",
   "version": "0.2.10",
-  "description": "",
+  "description": "GitHub Action to filter pull requests by changed file paths",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsup",
     "test": "vitest run"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["github-action", "path-filter", "pull-request"],
+  "author": "leavesster",
   "license": "ISC",
   "packageManager": "pnpm@9.6.0",
   "devDependencies": {
