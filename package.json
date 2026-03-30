@@ -1,6 +1,6 @@
 {
   "name": "paths",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "GitHub Action to filter pull requests by changed file paths",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "@octokit/plugin-retry": "^7.1.1",
     "@types/js-yaml": "^4.0.9",
     "@types/micromatch": "^4.0.9",
-    "@types/node": "^22.1.0",
+    "@types/node": "^24.0.0",
     "js-yaml": "^4.1.0",
     "micromatch": "^4.0.7",
     "tsup": "^8.2.4",
